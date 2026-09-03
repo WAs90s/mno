@@ -162,7 +162,7 @@ function Index() {
             iOS
           </a>
           <a
-            href={PARTNER_URL}
+            href= "https://wideangle.org.in/pqr"
             className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
           >
             List my shop
@@ -292,7 +292,7 @@ function Index() {
             the day MNO lands on your street.
           </p>
           <a
-            href={WHATSAPP_URL}
+            href="https://wa.me/914116945"
             target="_blank"
             rel="noopener noreferrer"
             className="brutal-lg brutal-hover mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-pink px-8 py-4 font-display text-lg uppercase"
@@ -301,7 +301,7 @@ function Index() {
             Chat on WhatsApp
           </a>
           <p className="mt-4 text-xs font-bold uppercase tracking-widest">
-            +91 98765 43210
+            
           </p>
         </div>
       </ScrollSection>
