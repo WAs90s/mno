@@ -162,7 +162,7 @@ function Index() {
             iOS
           </a>
           <a
-            href={PARTNER_URL}
+            href= "https://wideangle.org.in/pqr"
             className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
           >
             List my shop
