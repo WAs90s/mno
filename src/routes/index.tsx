@@ -1,17 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroStreet from "@/assets/hero-street.png";
-import { Store, MapPin, Clock, Heart, Search, ShoppingBag, Users, Smartphone } from "lucide-react";
+import { ScrollSection } from "@/components/scroll-section";
+import {
+  Store,
+  MapPin,
+  Clock,
+  Heart,
+  Search,
+  ShoppingBag,
+  Users,
+  Smartphone,
+  MessageCircle,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MNO — Shop your neighbourhood, straight from your street" },
+      { title: "MNO — Discover  your neighbourhood, straight from your street" },
       {
         name: "description",
         content:
-          "MNO is hyperlocal shopping from the shops on your street — kirana, bakery, flowers, tailors. Real shops, real people, right around the corner.",
+          "MNO is hyperlocal application that provides discovery of your place — kirana, bakery, flowers, tailors.and connects you to the community",
       },
-      { property: "og:title", content: "MNO — Shop your neighbourhood" },
+      { property: "og:title", content: "MNO — Discover your neighbourhood" },
       {
         property: "og:description",
         content:
@@ -25,15 +36,19 @@ export const Route = createFileRoute("/")({
 });
 
 // TODO: add real links
-const ANDROID_APP_URL = "";
-const IOS_APP_URL = "";
+const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.wa.mno&pli=1";
+const IOS_APP_URL = "https://apps.apple.com/app/id6754495909";
 const PARTNER_URL = "";
+const WHATSAPP_NUMBER = "";
+const WHATSAPP_URL = `https://wa.me/${914116945}?text=${encodeURIComponent(
+  "Hi Neighbour! I'd like to know when you launch in my area.",
+)}`;
 
 const chips = [
-  { icon: MapPin, label: "Within 2 km" },
+  { icon: MapPin, label: "Within Walking Distance" },
   { icon: Clock, label: "Live shop timings" },
-  { icon: Store, label: "Real local shops" },
-  { icon: Heart, label: "Zero markup" },
+  { icon: Store, label: "Local shops" },
+  { icon: Heart, label: "Loved locally" },
 ];
 
 const categories = [
@@ -71,22 +86,22 @@ const steps = [
   {
     n: "01",
     icon: Search,
-    title: "Set your street",
+    title: "Discover",
     body: "Drop a pin. We only show shops you can actually walk to.",
     color: "bg-yellow",
   },
   {
     n: "02",
     icon: ShoppingBag,
-    title: "Browse and reserve",
-    body: "See what's in stock across shops and hold it in your name.",
+    title: "Explore",
+    body: "Choose that is correct for you.",
     color: "bg-cyan",
   },
   {
     n: "03",
     icon: Store,
-    title: "Pick it up",
-    body: "Walk in, say your name, pay at the counter. That's the whole thing.",
+    title: "Connect",
+    body: "Get connected to the community.",
     color: "bg-green",
   },
 ];
@@ -107,30 +122,29 @@ function Index() {
               How it works
             </a>
             <a href="#partner" className="hover:text-cerulean">
-              For shops
+              Your Place
             </a>
           </div>
           <a
             href="#join"
             className="brutal brutal-hover rounded-full bg-cyan px-5 py-2 text-sm font-bold uppercase tracking-wide"
           >
-            Get the app
+            Contact Us
           </a>
         </nav>
       </header>
 
-      <section className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
+      <ScrollSection initialVisible className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
         <h1 className="font-display text-4xl leading-[0.95] uppercase sm:text-6xl lg:text-7xl">
-          Shopping from
+        Near
           <br />
-          <span className="text-pink">your street</span>,{" "}
-          <span className="text-purple">your shops</span>,
+          <span className="text-pink">Your Place </span>,{" "} <br />
+          <span className="text-purple">at your pace</span>,
           <br />
-          <span className="text-cerulean">your people</span>.
+          <span className="text-cerulean">close to home</span>.
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base font-medium text-muted-foreground sm:text-lg">
-          MNO puts every shop within 2 km of you in one place — see what's in stock, reserve
-          it, and pick it up on your way home.
+          MNO puts every the neighbourhood within walking distance of you in one place.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
@@ -138,14 +152,14 @@ function Index() {
             className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-cyan px-8 py-4 font-display text-xl uppercase"
           >
             <Smartphone className="size-5" strokeWidth={2.5} />
-            Start shopping — Android
+            Android
           </a>
           <a
             href="https://apps.apple.com/app/id6754495909"
             className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-yellow px-8 py-4 font-display text-xl uppercase"
           >
             <Smartphone className="size-5" strokeWidth={2.5} />
-            Start shopping — iOS
+            iOS
           </a>
           <a
             href={PARTNER_URL}
@@ -172,124 +186,125 @@ function Index() {
             className="w-full rounded-2xl"
           />
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="shops" className="mx-auto max-w-6xl px-4 py-16">
+      <ScrollSection id="shops" className="mx-auto max-w-6xl px-4 py-16">
         <p className="text-center text-sm font-bold uppercase tracking-[0.3em] text-muted-foreground">
           What's around you
         </p>
         <h2 className="mt-3 text-center font-display text-4xl uppercase sm:text-5xl">
-          More shops, one app
+          More choices, one app
         </h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((c) => (
             <article
               key={c.title}
-              className={`brutal brutal-hover rounded-3xl ${c.color} p-6 text-left`}
+              className={`brutal brutal-hover rounded-card flex min-w-0 flex-col overflow-hidden ${c.color} p-6 text-left`}
             >
-              <p className="font-display text-4xl">{c.count}</p>
-              <h3 className="mt-1 text-2xl uppercase">{c.title}</h3>
-              <p className="mt-2 text-sm font-semibold">{c.tag}</p>
-              <ul className="mt-5 space-y-2 border-t-[3px] border-border pt-4 text-sm font-bold uppercase tracking-wide">
+              <p className="font-display text-4xl leading-none">{c.count}</p>
+              <h3 className="mt-2 text-2xl uppercase leading-tight">{c.title}</h3>
+              <p className="mt-2 text-sm font-semibold leading-snug">{c.tag}</p>
+              <ul className="mt-5 space-y-2 border-t-[3px] border-border pt-4 text-sm font-bold uppercase leading-snug tracking-wide">
                 {c.items.map((i) => (
-                  <li key={i}>{i}</li>
+                  <li key={i} className="break-words">
+                    {i}
+                  </li>
                 ))}
               </ul>
             </article>
           ))}
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="how" className="mx-auto max-w-6xl px-4 py-16">
+      <ScrollSection id="how" className="mx-auto max-w-6xl px-4 py-16">
         <h2 className="text-center font-display text-4xl uppercase sm:text-5xl">
           Three steps. That's it.
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {steps.map((s) => (
-            <article key={s.n} className="brutal rounded-3xl bg-card p-7">
+            <article
+              key={s.n}
+              className="brutal rounded-card flex min-w-0 flex-col overflow-hidden bg-card p-7 pb-8"
+            >
               <div
-                className={`brutal flex size-14 items-center justify-center rounded-2xl ${s.color}`}
+                className={`brutal flex size-14 shrink-0 items-center justify-center rounded-card-sm ${s.color}`}
               >
                 <s.icon className="size-7" strokeWidth={2.5} />
               </div>
               <p className="mt-5 font-display text-sm tracking-[0.3em] text-muted-foreground">
                 {s.n}
               </p>
-              <h3 className="mt-1 text-2xl uppercase">{s.title}</h3>
-              <p className="mt-2 text-sm font-medium text-muted-foreground">{s.body}</p>
+              <h3 className="mt-1 text-2xl uppercase leading-tight">{s.title}</h3>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-muted-foreground">
+                {s.body}
+              </p>
             </article>
           ))}
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="partner" className="mx-auto max-w-6xl px-4 py-16">
-        <div className="brutal-lg grid gap-8 rounded-3xl bg-purple p-8 sm:p-12 lg:grid-cols-2">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.3em]">For shop owners</p>
-            <h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">
-              Your shop, online by evening
+      <ScrollSection id="partner" className="mx-auto max-w-6xl px-4 py-16">
+        <div className="brutal-lg rounded-card-lg grid gap-8 overflow-hidden bg-purple p-8 sm:p-12 lg:grid-cols-2">
+          <div className="min-w-0">
+            <p className="text-sm font-bold uppercase tracking-[0.3em]">For Local places </p>
+            <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">
+            Make Your Place Discoverable
             </h2>
-            <p className="mt-4 max-w-md font-semibold">
-              No commission for the first six months. No warehouse, no app to learn — a
-              WhatsApp message is enough to get your first customer walking in.
+            <p className="mt-4 max-w-md font-semibold leading-relaxed">
+              One app to Manage all your requirements.
             </p>
             <a
-              href={PARTNER_URL}
+              href="https://wideangle.org.in/pqr"
               className="brutal brutal-hover mt-7 inline-block rounded-full bg-card px-7 py-3 font-display text-lg uppercase"
             >
               Partner with us
             </a>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2">
             {[
-              { k: "0%", v: "commission for 6 months" },
-              { k: "2 km", v: "average shopper distance" },
-              { k: "2,400+", v: "orders every week" },
-              { k: "4.8★", v: "average shop rating" },
+              { k: "₹0", v: "Zero joining fee" },
+              { k: "1 : 1 ", v: "Chat with Customers" },
+              { k: "24/7", v: "Get discovered" },
+              { k: "100%", v: "Your business" },
             ].map((s) => (
-              <div key={s.k} className="brutal rounded-2xl bg-card p-5">
-                <p className="font-display text-3xl">{s.k}</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+              <div
+                key={s.k}
+                className="brutal flex min-w-0 flex-col overflow-hidden rounded-[1.25rem] bg-card p-5"
+              >
+                <p className="font-display text-3xl leading-none">{s.k}</p>
+                <p className="mt-2 text-xs font-bold uppercase leading-snug tracking-wide text-muted-foreground">
                   {s.v}
                 </p>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="join" className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <div className="brutal-lg rounded-3xl bg-cyan p-8 sm:p-12">
+      <ScrollSection id="join" className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <div className="brutal-lg overflow-hidden rounded-[1.75rem] bg-cyan p-8 sm:p-12">
           <Users className="mx-auto size-9" strokeWidth={2.5} />
           <h2 className="mt-4 font-display text-4xl uppercase sm:text-5xl">
             Be first in your area
           </h2>
           <p className="mt-3 font-semibold">
-            We open one neighbourhood at a time. Leave your number and we'll ping you the
-            day MNO lands on your street.
+            We open one neighbourhood at a time. Message us on WhatsApp and we'll ping you
+            the day MNO lands on your street.
           </p>
-          <form
-            className="mx-auto mt-7 flex max-w-md flex-col gap-3 sm:flex-row"
-            onSubmit={(e) => e.preventDefault()}
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="brutal-lg brutal-hover mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-pink px-8 py-4 font-display text-lg uppercase"
           >
-            <input
-              type="tel"
-              required
-              placeholder="Your phone number"
-              className="brutal w-full rounded-full bg-card px-5 py-3 font-semibold outline-none focus:shadow-[2px_2px_0_0_var(--color-border)]"
-            />
-            <button
-              type="submit"
-              className="brutal brutal-hover rounded-full bg-pink px-7 py-3 font-display text-lg uppercase"
-            >
-              Notify me
-            </button>
-          </form>
+            <MessageCircle className="size-5" strokeWidth={2.5} />
+            Chat on WhatsApp
+          </a>
           <p className="mt-4 text-xs font-bold uppercase tracking-widest">
-            2,000+ people already on the list
+            +91 98765 43210
           </p>
         </div>
-      </section>
+      </ScrollSection>
 
       <footer className="border-t-[3px] border-border px-4 py-10 text-center">
         <p className="font-display text-3xl uppercase text-cerulean">MNO</p>
