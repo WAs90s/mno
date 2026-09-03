@@ -292,7 +292,7 @@ function Index() {
             the day MNO lands on your street.
           </p>
           <a
-            href={WHATSAPP_URL}
+            href="https://wa.me/914116945"
             target="_blank"
             rel="noopener noreferrer"
             className="brutal-lg brutal-hover mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-pink px-8 py-4 font-display text-lg uppercase"
