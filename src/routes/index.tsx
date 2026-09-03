@@ -1,6 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroStreet from "@/assets/hero-street.png";
-import { Store, MapPin, Clock, Heart, Search, ShoppingBag, Users, Smartphone } from "lucide-react";
+import { ScrollSection } from "@/components/scroll-section";
+import {
+  Store,
+  MapPin,
+  Clock,
+  Heart,
+  Search,
+  ShoppingBag,
+  Users,
+  Smartphone,
+  MessageCircle,
+} from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,9 +36,13 @@ export const Route = createFileRoute("/")({
 });
 
 // TODO: add real links
-const ANDROID_APP_URL = "";
-const IOS_APP_URL = "";
+const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.wa.mno&pli=1";
+const IOS_APP_URL = "https://apps.apple.com/app/id6754495909";
 const PARTNER_URL = "";
+const WHATSAPP_NUMBER = "";
+const WHATSAPP_URL = `https://wa.me/${914116945}?text=${encodeURIComponent(
+  "Hi Neighbour! I'd like to know when you launch in my area.",
+)}`;
 
 const chips = [
   { icon: MapPin, label: "Within Walking Distance" },
@@ -71,22 +86,22 @@ const steps = [
   {
     n: "01",
     icon: Search,
-    title: "Set your street",
+    title: "Discover",
     body: "Drop a pin. We only show shops you can actually walk to.",
     color: "bg-yellow",
   },
   {
     n: "02",
     icon: ShoppingBag,
-    title: "Browse and reserve",
+    title: "Explore",
     body: "Choose that is correct for you.",
     color: "bg-cyan",
   },
   {
     n: "03",
     icon: Store,
-    title: "Pick it up",
-    body: "Walk in, open the app, pay at the counter. That's the whole thing.",
+    title: "Connect",
+    body: "Get connected to the community.",
     color: "bg-green",
   },
 ];
@@ -107,19 +122,19 @@ function Index() {
               How it works
             </a>
             <a href="#partner" className="hover:text-cerulean">
-              For shops
+              Your Place
             </a>
           </div>
           <a
             href="#join"
             className="brutal brutal-hover rounded-full bg-cyan px-5 py-2 text-sm font-bold uppercase tracking-wide"
           >
-            Get the app
+            Contact Us
           </a>
         </nav>
       </header>
 
-      <section className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
+      <ScrollSection initialVisible className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
         <h1 className="font-display text-4xl leading-[0.95] uppercase sm:text-6xl lg:text-7xl">
         Near
           <br />
@@ -171,9 +186,9 @@ function Index() {
             className="w-full rounded-2xl"
           />
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="shops" className="mx-auto max-w-6xl px-4 py-16">
+      <ScrollSection id="shops" className="mx-auto max-w-6xl px-4 py-16">
         <p className="text-center text-sm font-bold uppercase tracking-[0.3em] text-muted-foreground">
           What's around you
         </p>
@@ -199,9 +214,9 @@ function Index() {
             </article>
           ))}
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="how" className="mx-auto max-w-6xl px-4 py-16">
+      <ScrollSection id="how" className="mx-auto max-w-6xl px-4 py-16">
         <h2 className="text-center font-display text-4xl uppercase sm:text-5xl">
           Three steps. That's it.
         </h2>
@@ -226,20 +241,20 @@ function Index() {
             </article>
           ))}
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="partner" className="mx-auto max-w-6xl px-4 py-16">
+      <ScrollSection id="partner" className="mx-auto max-w-6xl px-4 py-16">
         <div className="brutal-lg rounded-card-lg grid gap-8 overflow-hidden bg-purple p-8 sm:p-12 lg:grid-cols-2">
           <div className="min-w-0">
-            <p className="text-sm font-bold uppercase tracking-[0.3em]">For shop owners</p>
+            <p className="text-sm font-bold uppercase tracking-[0.3em]">For Local places </p>
             <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">
-              Your shop, online by evening
+            Make Your Place Discoverable
             </h2>
             <p className="mt-4 max-w-md font-semibold leading-relaxed">
               One app to Manage all your requirements.
             </p>
             <a
-              href={PARTNER_URL}
+              href="https://wideangle.org.in/pqr"
               className="brutal brutal-hover mt-7 inline-block rounded-full bg-card px-7 py-3 font-display text-lg uppercase"
             >
               Partner with us
@@ -250,7 +265,7 @@ function Index() {
               { k: "₹0", v: "Zero joining fee" },
               { k: "1 : 1 ", v: "Chat with Customers" },
               { k: "24/7", v: "Get discovered" },
-              { k: "100%", v: "Local vibe" },
+              { k: "100%", v: "Your business" },
             ].map((s) => (
               <div
                 key={s.k}
@@ -264,40 +279,32 @@ function Index() {
             ))}
           </div>
         </div>
-      </section>
+      </ScrollSection>
 
-      <section id="join" className="mx-auto max-w-3xl px-4 py-16 text-center">
+      <ScrollSection id="join" className="mx-auto max-w-3xl px-4 py-16 text-center">
         <div className="brutal-lg overflow-hidden rounded-[1.75rem] bg-cyan p-8 sm:p-12">
           <Users className="mx-auto size-9" strokeWidth={2.5} />
           <h2 className="mt-4 font-display text-4xl uppercase sm:text-5xl">
             Be first in your area
           </h2>
           <p className="mt-3 font-semibold">
-            We open one neighbourhood at a time. Leave your number and we'll ping you the
-            day MNO lands on your street.
+            We open one neighbourhood at a time. Message us on WhatsApp and we'll ping you
+            the day MNO lands on your street.
           </p>
-          <form
-            className="mx-auto mt-7 flex max-w-md flex-col gap-3 sm:flex-row"
-            onSubmit={(e) => e.preventDefault()}
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="brutal-lg brutal-hover mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-pink px-8 py-4 font-display text-lg uppercase"
           >
-            <input
-              type="tel"
-              required
-              placeholder="Your phone number"
-              className="brutal w-full rounded-full bg-card px-5 py-3 font-semibold outline-none focus:shadow-[2px_2px_0_0_var(--color-border)]"
-            />
-            <button
-              type="submit"
-              className="brutal brutal-hover rounded-full bg-pink px-7 py-3 font-display text-lg uppercase"
-            >
-              Notify me
-            </button>
-          </form>
+            <MessageCircle className="size-5" strokeWidth={2.5} />
+            Chat on WhatsApp
+          </a>
           <p className="mt-4 text-xs font-bold uppercase tracking-widest">
-            2,000+ people already on the list
+            +91 98765 43210
           </p>
         </div>
-      </section>
+      </ScrollSection>
 
       <footer className="border-t-[3px] border-border px-4 py-10 text-center">
         <p className="font-display text-3xl uppercase text-cerulean">MNO</p>
