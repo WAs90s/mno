@@ -121,16 +121,15 @@ function Index() {
 
       <section className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
         <h1 className="font-display text-4xl leading-[0.95] uppercase sm:text-6xl lg:text-7xl">
-        Discover your 
+        Near
           <br />
-          <span className="text-pink">your neighbourhood </span>,{" "} <br />
-          <span className="text-purple">around the corner </span>,
+          <span className="text-pink">Your Place </span>,{" "} <br />
+          <span className="text-purple">at your pace</span>,
           <br />
           <span className="text-cerulean">close to home</span>.
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base font-medium text-muted-foreground sm:text-lg">
-          MNO puts every shop within 2 km of you in one place — see what's in stock, reserve
-          it, and pick it up on your way home.
+          MNO puts every the neighbourhood within walking distance of you in one place.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
@@ -179,7 +178,7 @@ function Index() {
           What's around you
         </p>
         <h2 className="mt-3 text-center font-display text-4xl uppercase sm:text-5xl">
-          More shops, one app
+          More choices, one app
         </h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((c) => (
@@ -237,8 +236,7 @@ function Index() {
               Your shop, online by evening
             </h2>
             <p className="mt-4 max-w-md font-semibold leading-relaxed">
-              No commission for the first six months. No warehouse, no app to learn — a
-              WhatsApp message is enough to get your first customer walking in.
+              One app to Manage all your requirements.
             </p>
             <a
               href={PARTNER_URL}
@@ -249,10 +247,10 @@ function Index() {
           </div>
           <div className="grid min-w-0 gap-4 sm:grid-cols-2">
             {[
-              { k: "Free", v: "Claim your place" },
-              { k: "2 km", v: "average shopper distance" },
-              { k: "2,400+", v: "orders every week" },
-              { k: "4.8★", v: "average shop rating" },
+              { k: "₹0", v: "Zero joining fee" },
+              { k: "1 : 1 ", v: "Chat with Customers" },
+              { k: "24/7", v: "Get discovered" },
+              { k: "100%", v: "Local vibe" },
             ].map((s) => (
               <div
                 key={s.k}
