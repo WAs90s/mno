@@ -30,14 +30,14 @@ function run(command, args, options = {}) {
 }
 
 async function waitForServer() {
-  for (let attempt = 0; attempt < 60; attempt += 1) {
+  for (let attempt = 0; attempt < 120; attempt += 1) {
     try {
       const response = await fetch(url);
       if (response.ok) return;
     } catch {
       // Server not ready yet.
     }
-    await new Promise((resolveDelay) => setTimeout(resolveDelay, 500));
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 1000));
   }
   throw new Error("Timed out waiting for local preview server");
 }
@@ -53,6 +53,7 @@ async function main() {
     {
       cwd: resolve(root, ".output"),
       stdio: ["ignore", "pipe", "pipe"],
+      detached: true,
     },
   );
 
@@ -63,6 +64,16 @@ async function main() {
   wrangler.stdout.on("data", (chunk) => {
     process.stdout.write(chunk);
   });
+
+  const stopWrangler = () => {
+    if (wrangler.pid) {
+      try {
+        process.kill(-wrangler.pid, "SIGKILL");
+      } catch {
+        wrangler.kill("SIGKILL");
+      }
+    }
+  };
 
   try {
     await waitForServer();
@@ -78,7 +89,7 @@ async function main() {
 
     console.log(`Static site ready in ${dist}`);
   } finally {
-    wrangler.kill("SIGTERM");
+    stopWrangler();
   }
 }
 
