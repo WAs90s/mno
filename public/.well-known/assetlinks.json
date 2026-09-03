@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wa.mno",
+      "sha256_cert_fingerprints": [
+        "AE:9B:06:50:E2:21:8A:D5:29:34:40:E8:A9:43:24:4E:F8:6A:82:D2:07:AF:A7:2E:7E:CF:62:92:5B:C3:A3:08"
+      ]
+    }
+  }
+]
