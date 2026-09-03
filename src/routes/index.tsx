@@ -301,7 +301,7 @@ function Index() {
             Chat on WhatsApp
           </a>
           <p className="mt-4 text-xs font-bold uppercase tracking-widest">
-            +91 98765 43210
+            
           </p>
         </div>
       </ScrollSection>
