@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import {
   cpSync,
+  existsSync,
   mkdirSync,
   readFileSync,
   rmSync,
@@ -82,6 +83,13 @@ async function main() {
     rmSync(dist, { recursive: true, force: true });
     mkdirSync(dist, { recursive: true });
     cpSync(outputPublic, dist, { recursive: true });
+    cpSync(resolve(root, "public/.well-known"), resolve(dist, ".well-known"), {
+      recursive: true,
+    });
+    const publicHeaders = resolve(root, "public/_headers");
+    if (existsSync(publicHeaders)) {
+      cpSync(publicHeaders, resolve(dist, "_headers"));
+    }
     writeFileSync(resolve(dist, "index.html"), html);
     writeFileSync(resolve(dist, "404.html"), html);
     writeFileSync(resolve(dist, ".nojekyll"), "");

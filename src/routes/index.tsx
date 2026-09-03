@@ -162,7 +162,7 @@ function Index() {
             iOS
           </a>
           <a
-            href= "https://wideangle.org.in/pqr"
+            href="https://mno.co.in/pqr"
             className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
           >
             List my shop
@@ -254,7 +254,7 @@ function Index() {
               One app to Manage all your requirements.
             </p>
             <a
-              href="https://wideangle.org.in/pqr"
+              href="https://mno.co.in/pqr"
               className="brutal brutal-hover mt-7 inline-block rounded-full bg-card px-7 py-3 font-display text-lg uppercase"
             >
               Partner with us

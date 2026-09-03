@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "5QMB9BHQX7.com.wa.mno",
+        "paths": [
+          "/*",
+          "/shop/*",
+          "/group/*"
+        ]
+      }
+    ]
+  }
+}
