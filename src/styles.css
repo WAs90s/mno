@@ -96,6 +96,18 @@
   }
 }
 
+@utility rounded-card {
+  border-radius: 1.5rem;
+}
+
+@utility rounded-card-lg {
+  border-radius: 1.75rem;
+}
+
+@utility rounded-card-sm {
+  border-radius: 1.25rem;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

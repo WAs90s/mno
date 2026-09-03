@@ -5,13 +5,13 @@ import { Store, MapPin, Clock, Heart, Search, ShoppingBag, Users, Smartphone } f
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MNO — Shop your neighbourhood, straight from your street" },
+      { title: "MNO — Discover  your neighbourhood, straight from your street" },
       {
         name: "description",
         content:
-          "MNO is hyperlocal shopping from the shops on your street — kirana, bakery, flowers, tailors. Real shops, real people, right around the corner.",
+          "MNO is hyperlocal application that provides discovery of your place — kirana, bakery, flowers, tailors.and connects you to the community",
       },
-      { property: "og:title", content: "MNO — Shop your neighbourhood" },
+      { property: "og:title", content: "MNO — Discover your neighbourhood" },
       {
         property: "og:description",
         content:
@@ -30,10 +30,10 @@ const IOS_APP_URL = "";
 const PARTNER_URL = "";
 
 const chips = [
-  { icon: MapPin, label: "Within 2 km" },
+  { icon: MapPin, label: "Within Walking Distance" },
   { icon: Clock, label: "Live shop timings" },
-  { icon: Store, label: "Real local shops" },
-  { icon: Heart, label: "Zero markup" },
+  { icon: Store, label: "Local shops" },
+  { icon: Heart, label: "Loved locally" },
 ];
 
 const categories = [
@@ -79,14 +79,14 @@ const steps = [
     n: "02",
     icon: ShoppingBag,
     title: "Browse and reserve",
-    body: "See what's in stock across shops and hold it in your name.",
+    body: "Choose that is correct for you.",
     color: "bg-cyan",
   },
   {
     n: "03",
     icon: Store,
     title: "Pick it up",
-    body: "Walk in, say your name, pay at the counter. That's the whole thing.",
+    body: "Walk in, open the app, pay at the counter. That's the whole thing.",
     color: "bg-green",
   },
 ];
@@ -121,12 +121,12 @@ function Index() {
 
       <section className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
         <h1 className="font-display text-4xl leading-[0.95] uppercase sm:text-6xl lg:text-7xl">
-          Shopping from
+        Discover your 
           <br />
-          <span className="text-pink">your street</span>,{" "}
-          <span className="text-purple">your shops</span>,
+          <span className="text-pink">your neighbourhood </span>,{" "} <br />
+          <span className="text-purple">around the corner </span>,
           <br />
-          <span className="text-cerulean">your people</span>.
+          <span className="text-cerulean">close to home</span>.
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base font-medium text-muted-foreground sm:text-lg">
           MNO puts every shop within 2 km of you in one place — see what's in stock, reserve
@@ -138,14 +138,14 @@ function Index() {
             className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-cyan px-8 py-4 font-display text-xl uppercase"
           >
             <Smartphone className="size-5" strokeWidth={2.5} />
-            Start shopping — Android
+            Android
           </a>
           <a
             href="https://apps.apple.com/app/id6754495909"
             className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-yellow px-8 py-4 font-display text-xl uppercase"
           >
             <Smartphone className="size-5" strokeWidth={2.5} />
-            Start shopping — iOS
+            iOS
           </a>
           <a
             href={PARTNER_URL}
@@ -185,14 +185,16 @@ function Index() {
           {categories.map((c) => (
             <article
               key={c.title}
-              className={`brutal brutal-hover rounded-3xl ${c.color} p-6 text-left`}
+              className={`brutal brutal-hover rounded-card flex min-w-0 flex-col overflow-hidden ${c.color} p-6 text-left`}
             >
-              <p className="font-display text-4xl">{c.count}</p>
-              <h3 className="mt-1 text-2xl uppercase">{c.title}</h3>
-              <p className="mt-2 text-sm font-semibold">{c.tag}</p>
-              <ul className="mt-5 space-y-2 border-t-[3px] border-border pt-4 text-sm font-bold uppercase tracking-wide">
+              <p className="font-display text-4xl leading-none">{c.count}</p>
+              <h3 className="mt-2 text-2xl uppercase leading-tight">{c.title}</h3>
+              <p className="mt-2 text-sm font-semibold leading-snug">{c.tag}</p>
+              <ul className="mt-5 space-y-2 border-t-[3px] border-border pt-4 text-sm font-bold uppercase leading-snug tracking-wide">
                 {c.items.map((i) => (
-                  <li key={i}>{i}</li>
+                  <li key={i} className="break-words">
+                    {i}
+                  </li>
                 ))}
               </ul>
             </article>
@@ -206,30 +208,35 @@ function Index() {
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {steps.map((s) => (
-            <article key={s.n} className="brutal rounded-3xl bg-card p-7">
+            <article
+              key={s.n}
+              className="brutal rounded-card flex min-w-0 flex-col overflow-hidden bg-card p-7 pb-8"
+            >
               <div
-                className={`brutal flex size-14 items-center justify-center rounded-2xl ${s.color}`}
+                className={`brutal flex size-14 shrink-0 items-center justify-center rounded-card-sm ${s.color}`}
               >
                 <s.icon className="size-7" strokeWidth={2.5} />
               </div>
               <p className="mt-5 font-display text-sm tracking-[0.3em] text-muted-foreground">
                 {s.n}
               </p>
-              <h3 className="mt-1 text-2xl uppercase">{s.title}</h3>
-              <p className="mt-2 text-sm font-medium text-muted-foreground">{s.body}</p>
+              <h3 className="mt-1 text-2xl uppercase leading-tight">{s.title}</h3>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-muted-foreground">
+                {s.body}
+              </p>
             </article>
           ))}
         </div>
       </section>
 
       <section id="partner" className="mx-auto max-w-6xl px-4 py-16">
-        <div className="brutal-lg grid gap-8 rounded-3xl bg-purple p-8 sm:p-12 lg:grid-cols-2">
-          <div>
+        <div className="brutal-lg rounded-card-lg grid gap-8 overflow-hidden bg-purple p-8 sm:p-12 lg:grid-cols-2">
+          <div className="min-w-0">
             <p className="text-sm font-bold uppercase tracking-[0.3em]">For shop owners</p>
-            <h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">
+            <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">
               Your shop, online by evening
             </h2>
-            <p className="mt-4 max-w-md font-semibold">
+            <p className="mt-4 max-w-md font-semibold leading-relaxed">
               No commission for the first six months. No warehouse, no app to learn — a
               WhatsApp message is enough to get your first customer walking in.
             </p>
@@ -240,16 +247,19 @@ function Index() {
               Partner with us
             </a>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2">
             {[
-              { k: "0%", v: "commission for 6 months" },
+              { k: "Free", v: "Claim your place" },
               { k: "2 km", v: "average shopper distance" },
               { k: "2,400+", v: "orders every week" },
               { k: "4.8★", v: "average shop rating" },
             ].map((s) => (
-              <div key={s.k} className="brutal rounded-2xl bg-card p-5">
-                <p className="font-display text-3xl">{s.k}</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+              <div
+                key={s.k}
+                className="brutal flex min-w-0 flex-col overflow-hidden rounded-[1.25rem] bg-card p-5"
+              >
+                <p className="font-display text-3xl leading-none">{s.k}</p>
+                <p className="mt-2 text-xs font-bold uppercase leading-snug tracking-wide text-muted-foreground">
                   {s.v}
                 </p>
               </div>
@@ -259,7 +269,7 @@ function Index() {
       </section>
 
       <section id="join" className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <div className="brutal-lg rounded-3xl bg-cyan p-8 sm:p-12">
+        <div className="brutal-lg overflow-hidden rounded-[1.75rem] bg-cyan p-8 sm:p-12">
           <Users className="mx-auto size-9" strokeWidth={2.5} />
           <h2 className="mt-4 font-display text-4xl uppercase sm:text-5xl">
             Be first in your area
