@@ -1,0 +1,88 @@
+import { spawn } from "node:child_process";
+import {
+  cpSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { resolve } from "node:path";
+
+const root = resolve(import.meta.dirname, "..");
+const dist = resolve(root, "dist");
+const outputPublic = resolve(root, ".output/public");
+const port = 8787;
+const url = `http://127.0.0.1:${port}/`;
+
+function run(command, args, options = {}) {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn(command, args, {
+      cwd: root,
+      stdio: "inherit",
+      ...options,
+    });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) resolvePromise();
+      else reject(new Error(`${command} exited with code ${code}`));
+    });
+  });
+}
+
+async function waitForServer() {
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) return;
+    } catch {
+      // Server not ready yet.
+    }
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 500));
+  }
+  throw new Error("Timed out waiting for local preview server");
+}
+
+async function main() {
+  console.log("Building app...");
+  await run("npm", ["run", "build"]);
+
+  console.log("Starting preview server for prerender...");
+  const wrangler = spawn(
+    "npx",
+    ["wrangler", "dev", "--port", String(port), "--local", "--ip", "127.0.0.1"],
+    {
+      cwd: resolve(root, ".output"),
+      stdio: ["ignore", "pipe", "pipe"],
+    },
+  );
+
+  wrangler.stderr.on("data", (chunk) => {
+    process.stderr.write(chunk);
+  });
+
+  wrangler.stdout.on("data", (chunk) => {
+    process.stdout.write(chunk);
+  });
+
+  try {
+    await waitForServer();
+    const html = await fetch(url).then((response) => response.text());
+
+    rmSync(dist, { recursive: true, force: true });
+    mkdirSync(dist, { recursive: true });
+    cpSync(outputPublic, dist, { recursive: true });
+    writeFileSync(resolve(dist, "index.html"), html);
+    writeFileSync(resolve(dist, "404.html"), html);
+    writeFileSync(resolve(dist, ".nojekyll"), "");
+    cpSync(resolve(root, "CNAME"), resolve(dist, "CNAME"));
+
+    console.log(`Static site ready in ${dist}`);
+  } finally {
+    wrangler.kill("SIGTERM");
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
