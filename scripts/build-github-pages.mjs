@@ -90,6 +90,26 @@ async function main() {
     if (existsSync(publicHeaders)) {
       cpSync(publicHeaders, resolve(dist, "_headers"));
     }
+    const pqrSource = resolve(root, "public/pqr");
+    if (existsSync(pqrSource)) {
+      if (!existsSync(resolve(pqrSource, "index.html"))) {
+        throw new Error(
+          "public/pqr/index.html is missing. Run shop_owner_app/scripts/build_godaddy_web.sh /pqr/ first.",
+        );
+      }
+      console.log("Copying shop owner web app from public/pqr...");
+      cpSync(pqrSource, resolve(dist, "pqr"), {
+        recursive: true,
+        filter: (src) => {
+          const name = src.split("/").pop() ?? "";
+          return name !== "Archive.zip" && name !== ".DS_Store";
+        },
+      });
+    } else {
+      throw new Error(
+        "public/pqr not found. From shop_owner_app run: ./scripts/build_godaddy_web.sh /pqr/",
+      );
+    }
     writeFileSync(resolve(dist, "index.html"), html);
     writeFileSync(resolve(dist, "404.html"), html);
     writeFileSync(resolve(dist, ".nojekyll"), "");

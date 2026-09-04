@@ -38,7 +38,9 @@ export const Route = createFileRoute("/")({
 // TODO: add real links
 const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.wa.mno&pli=1";
 const IOS_APP_URL = "https://apps.apple.com/app/id6754495909";
-const PARTNER_URL = "";
+const PARTNER_URL = import.meta.env.DEV
+  ? "http://localhost:8080/"
+  : "https://www.mno.co.in/pqr/";
 const WHATSAPP_NUMBER = "";
 const WHATSAPP_URL = `https://wa.me/${914116945}?text=${encodeURIComponent(
   "Hi Neighbour! I'd like to know when you launch in my area.",
@@ -148,21 +150,21 @@ function Index() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
-            href="https://play.google.com/store/apps/details?id=com.wa.mno&pli=1"
+            href={ANDROID_APP_URL}
             className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-cyan px-8 py-4 font-display text-xl uppercase"
           >
             <Smartphone className="size-5" strokeWidth={2.5} />
             Android
           </a>
           <a
-            href="https://apps.apple.com/app/id6754495909"
+            href={IOS_APP_URL}
             className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-yellow px-8 py-4 font-display text-xl uppercase"
           >
             <Smartphone className="size-5" strokeWidth={2.5} />
             iOS
           </a>
           <a
-            href="https://mno.co.in/pqr"
+            href={PARTNER_URL}
             className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
           >
             List my shop
@@ -254,7 +256,9 @@ function Index() {
               One app to Manage all your requirements.
             </p>
             <a
-              href="https://mno.co.in/pqr"
+              href={PARTNER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="brutal brutal-hover mt-7 inline-block rounded-full bg-card px-7 py-3 font-display text-lg uppercase"
             >
               Partner with us
