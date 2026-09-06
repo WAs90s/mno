@@ -159250,7 +159250,7 @@ n=this.c
 s=n.length===0
 r=this.a
 q=r.ax?p:new A.bTn(r,a)
-if(s)n="Select nakshatra"
+if(s)n=" "
 r=r.c
 if(s){r.toString
 r=A.S(r).cy}else{r.toString
