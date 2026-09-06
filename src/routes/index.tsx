@@ -54,8 +54,8 @@ const WHATSAPP_URL = `https://wa.me/${914116945}?text=${encodeURIComponent(
 
 const chips = [
   { icon: MapPin, label: "Within Walking Distance" },
-  { icon: Clock, label: "Live shop timings" },
-  { icon: Store, label: "Local shops" },
+  { icon: Clock, label: "What’s open" },
+  { icon: Store, label: "Local Place" },
   { icon: Heart, label: "Loved locally" },
 ];
 
