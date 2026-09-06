@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { MouseEvent } from "react";
 import heroStreet from "@/assets/hero-street.png";
 import { ScrollSection } from "@/components/scroll-section";
 import {
@@ -38,9 +39,14 @@ export const Route = createFileRoute("/")({
 // TODO: add real links
 const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.wa.mno&pli=1";
 const IOS_APP_URL = "https://apps.apple.com/app/id6754495909";
-const PARTNER_URL = import.meta.env.DEV
-  ? "http://localhost:8080/"
-  : "https://www.mno.co.in/pqr/";
+const PARTNER_URL = "/pqr/";
+
+function openPartnerApp(event: MouseEvent<HTMLAnchorElement>) {
+  // TanStack Router intercepts same-origin <a> clicks; force a full navigation
+  // so the static Flutter app at /pqr/ loads instead of the marketing SPA.
+  event.preventDefault();
+  window.location.assign(PARTNER_URL);
+}
 const WHATSAPP_NUMBER = "";
 const WHATSAPP_URL = `https://wa.me/${914116945}?text=${encodeURIComponent(
   "Hi Neighbour! I'd like to know when you launch in my area.",
@@ -165,6 +171,7 @@ function Index() {
           </a>
           <a
             href={PARTNER_URL}
+            onClick={openPartnerApp}
             className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
           >
             List my shop
@@ -257,8 +264,7 @@ function Index() {
             </p>
             <a
               href={PARTNER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={openPartnerApp}
               className="brutal brutal-hover mt-7 inline-block rounded-full bg-card px-7 py-3 font-display text-lg uppercase"
             >
               Partner with us

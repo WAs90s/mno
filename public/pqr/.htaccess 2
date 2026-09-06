@@ -1,0 +1,47 @@
+# Flutter web on GoDaddy (Apache)
+DirectoryIndex index.html
+Options -Indexes
+FileETag None
+
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType application/wasm .wasm
+  AddType application/json .json
+  AddType text/css .css
+  AddType image/png .png
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.wasm$">
+    Header set Content-Type "application/wasm"
+  </FilesMatch>
+  <FilesMatch "\.(js|mjs)$">
+    Header set Content-Type "application/javascript; charset=utf-8"
+  </FilesMatch>
+  <Files "flutter_service_worker.js">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </Files>
+  <Files "index.html">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </Files>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# SPA fallback for Flutter web
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /pqr/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Fallback when mod_rewrite is unavailable
+ErrorDocument 404 /pqr/index.html
