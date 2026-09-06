@@ -174,7 +174,7 @@ function Index() {
             onClick={openPartnerApp}
             className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
           >
-            List my shop
+            Join Us
           </a>
         </div>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs font-bold uppercase tracking-widest sm:text-sm">
