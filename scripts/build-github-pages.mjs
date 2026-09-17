@@ -12,8 +12,24 @@ import { resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const dist = resolve(root, "dist");
 const outputPublic = resolve(root, ".output/public");
+const wranglerConfigPath = resolve(root, ".output/server/wrangler.json");
 const port = 8787;
 const url = `http://127.0.0.1:${port}/`;
+
+/** Must be ≤ workerd build bundled with wrangler in CI (see wrangler dev error). */
+const WRANGLER_COMPATIBILITY_DATE =
+  process.env.WRANGLER_COMPATIBILITY_DATE ?? "2026-09-07";
+
+function pinWranglerCompatibilityDate() {
+  if (!existsSync(wranglerConfigPath)) {
+    throw new Error(
+      `Missing ${wranglerConfigPath}. Run "npm run build" before prerender.`,
+    );
+  }
+  const config = JSON.parse(readFileSync(wranglerConfigPath, "utf8"));
+  config.compatibility_date = WRANGLER_COMPATIBILITY_DATE;
+  writeFileSync(wranglerConfigPath, `${JSON.stringify(config, null, 2)}\n`);
+}
 
 function run(command, args, options = {}) {
   return new Promise((resolvePromise, reject) => {
@@ -46,11 +62,27 @@ async function waitForServer() {
 async function main() {
   console.log("Building app...");
   await run("npm", ["run", "build"]);
+  pinWranglerCompatibilityDate();
+  console.log(
+    `Using Wrangler compatibility_date ${WRANGLER_COMPATIBILITY_DATE}`,
+  );
 
   console.log("Starting preview server for prerender...");
   const wrangler = spawn(
     "npx",
-    ["wrangler", "dev", "--port", String(port), "--local", "--ip", "127.0.0.1"],
+    [
+      "wrangler",
+      "dev",
+      "--config",
+      "server/wrangler.json",
+      "--compatibility-date",
+      WRANGLER_COMPATIBILITY_DATE,
+      "--port",
+      String(port),
+      "--local",
+      "--ip",
+      "127.0.0.1",
+    ],
     {
       cwd: resolve(root, ".output"),
       stdio: ["ignore", "pipe", "pipe"],
