@@ -1,326 +1,375 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { MouseEvent } from "react";
-import heroStreet from "@/assets/hero-street.png";
-import { ScrollSection } from "@/components/scroll-section";
+
 import {
   Store,
   MapPin,
-  Clock,
-  Heart,
-  Search,
-  ShoppingBag,
-  Users,
-  Smartphone,
   MessageCircle,
+  Bike,
+  Search,
+  HeartHandshake,
+  Clock,
+  IndianRupee,
 } from "lucide-react";
+
+import heroShops from "@/assets/hero-shops.jpg";
+import { Nav } from "@/components/site/Nav";
+import { Marquee } from "@/components/site/Marquee";
+import { Reveal } from "@/components/site/Reveal";
+import { ScrollScene, Parallax, ScrollProgressBar } from "@/components/site/ScrollScene";
+import { PinnedScene, ScrollZoom, ScrollWords } from "@/components/site/PinnedScene";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MNO — Discover  your neighbourhood, straight from your street" },
+      { title: "MNO" },
       {
         name: "description",
         content:
-          "MNO is hyperlocal application that provides discovery of your place — kirana, bakery, flowers, tailors.and connects you to the community",
+          "MNO connects you to the places on your own street. Search local stock, chat with the counter and pick up in minutes.",
       },
-      { property: "og:title", content: "MNO — Discover your neighbourhood" },
+      { property: "og:title", content: "MNO — Shop your neighbourhood" },
       {
         property: "og:description",
         content:
-          "Discover and buy from the shops around the corner. Hyperlocal shopping with real neighbourhood stores.",
+          "Find what you need at the bakery, kirana, florist and tailor around the corner. Chat, reserve, pick up.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Index,
+  component: Home,
 });
 
-// TODO: add real links
 const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.wa.mno&pli=1";
 const IOS_APP_URL = "https://apps.apple.com/app/id6754495909";
 const PARTNER_URL = "/pqr/";
 
+const WHATSAPP_URL = `https://wa.me/914116945?text=${encodeURIComponent(
+  "Hi! I'd like to know when MNO launches in my area.",
+)}`;
+
 function openPartnerApp(event: MouseEvent<HTMLAnchorElement>) {
-  // TanStack Router intercepts same-origin <a> clicks; force a full navigation
-  // so the static Flutter app at /pqr/ loads instead of the marketing SPA.
   event.preventDefault();
   window.location.assign(PARTNER_URL);
 }
-const WHATSAPP_NUMBER = "";
-const WHATSAPP_URL = `https://wa.me/${914116945}?text=${encodeURIComponent(
-  "Hi Neighbour! I'd like to know when you launch in my area.",
-)}`;
-
-const chips = [
-  { icon: MapPin, label: "Within Walking Distance" },
-  { icon: Clock, label: "What’s open" },
-  { icon: Store, label: "Local Place" },
-  { icon: Heart, label: "Loved locally" },
-];
 
 const categories = [
-  {
-    count: "500+",
-    title: "Kirana",
-    tag: "Atta, dal, chai — the daily stuff.",
-    color: "bg-cyan",
-    items: ["Groceries", "Snacks", "Household"],
-  },
-  {
-    count: "120+",
-    title: "Fresh",
-    tag: "Picked this morning, not last week.",
-    color: "bg-green",
-    items: ["Fruits & veg", "Dairy", "Bakery"],
-  },
-  {
-    count: "80+",
-    title: "Services",
-    tag: "The uncle who actually fixes it.",
-    color: "bg-pink",
-    items: ["Tailors", "Repairs", "Laundry"],
-  },
-  {
-    count: "60+",
-    title: "Gifting",
-    tag: "Flowers before the shop shuts.",
-    color: "bg-purple",
-    items: ["Florists", "Cakes", "Stationery"],
-  },
+  "Temple",
+  "Tailor",
+  "Florist",
+  "Kirana",
+  "Bakery",
+  "Chai stall",
+  "Pharmacy",
+  "Hardware",
+  "Stationery",
+  "Fruit cart",
+  "Salon",
 ];
 
 const steps = [
   {
-    n: "01",
     icon: Search,
-    title: "Discover",
-    body: "Drop a pin. We only show shops you can actually walk to.",
-    color: "bg-yellow",
+    color: "bg-pink",
+    kicker: "Step one",
+    title: "Search your street",
+    body: "Type what you need. MNO shows only places within a short walk of you.",
   },
   {
-    n: "02",
-    icon: ShoppingBag,
-    title: "Explore",
-    body: "Choose that is correct for you.",
-    color: "bg-cyan",
+    icon: MessageCircle,
+    color: "bg-grape",
+    kicker: "Step two",
+    title: "Chat with the place",
+    body: "Ask if it's in stock, agree a price, reserve it. Real people, no call centre.",
   },
   {
-    n: "03",
-    icon: Store,
-    title: "Connect",
-    body: "Get connected to the community.",
-    color: "bg-green",
+    icon: Bike,
+    color: "bg-leaf",
+    kicker: "Step three",
+    title: "Pick up or get it dropped",
+    body: "Walk over in five minutes, or let them send it across the lane.",
   },
 ];
 
-function Index() {
+const stats = [
+  { value: "500+", label: "places listed" },
+  { value: "0%", label: "hidden fees" },
+  { value: "100%", label: "transparent pricing" },
+];
+const perks = [
+  { icon: MapPin, title: "Only what's near", body: "Nothing from a warehouse three cities away." },
+  { icon: Clock, title: "Make Your Move", body: "Access great places and experiences across the city." },
+  {
+    icon: IndianRupee,
+    title: "Keep More in Your Wallet",
+    body: "Enjoy better prices without unnecessary platform markups.",
+  },
+  { icon: HeartHandshake, title: "Faces, not accounts", body: "Chat with the person at the counter." },
+];
+
+function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 px-4 pt-4">
-        <nav className="brutal mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full bg-card px-5 py-3">
-          <span className="font-display text-4xl leading-none tracking-wide text-cerulean">
-            MNO
-          </span>
-          <div className="hidden items-center gap-6 text-sm font-semibold uppercase tracking-wide md:flex">
-            <a href="#shops" className="hover:text-cerulean">
-              Shops
-            </a>
-            <a href="#how" className="hover:text-cerulean">
-              How it works
-            </a>
-            <a href="#partner" className="hover:text-cerulean">
-              Your Place
-            </a>
-          </div>
-          <a
-            href="#join"
-            className="brutal brutal-hover rounded-full bg-cyan px-5 py-2 text-sm font-bold uppercase tracking-wide"
-          >
-            Contact Us
-          </a>
-        </nav>
-      </header>
+    <div id="top" className="min-h-screen bg-background">
+      <ScrollProgressBar />
+      <Nav />
 
-      <ScrollSection initialVisible className="mx-auto max-w-6xl px-4 pt-14 pb-8 text-center">
-        <h1 className="font-display text-4xl leading-[0.95] uppercase sm:text-6xl lg:text-7xl">
-        Near
-          <br />
-          <span className="text-pink">Your Place </span>,{" "} <br />
-          <span className="text-purple">at your pace</span>,
-          <br />
-          <span className="text-cerulean">close to home</span>.
-        </h1>
-        <p className="mx-auto mt-6 max-w-xl text-base font-medium text-muted-foreground sm:text-lg">
-          MNO puts every the neighbourhood within walking distance of you in one place.
-        </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href={ANDROID_APP_URL}
-            className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-cyan px-8 py-4 font-display text-xl uppercase"
-          >
-            <Smartphone className="size-5" strokeWidth={2.5} />
-            Android
-          </a>
-          <a
-            href={IOS_APP_URL}
-            className="brutal-lg brutal-hover flex items-center gap-2 rounded-full bg-yellow px-8 py-4 font-display text-xl uppercase"
-          >
-            <Smartphone className="size-5" strokeWidth={2.5} />
-            iOS
-          </a>
-          <a
-            href={PARTNER_URL}
-            onClick={openPartnerApp}
-            className="brutal brutal-hover rounded-full bg-card px-8 py-4 font-display text-xl uppercase"
-          >
-            Join Us
-          </a>
-        </div>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs font-bold uppercase tracking-widest sm:text-sm">
-          {chips.map((c) => (
-            <span key={c.label} className="flex items-center gap-2">
-              <c.icon className="size-4" strokeWidth={2.5} />
-              {c.label}
-            </span>
-          ))}
-        </div>
-
-        <div className="brutal-lg mt-12 overflow-hidden rounded-3xl bg-card p-3">
-          <img
-            src={heroStreet}
-            alt="Illustrated neighbourhood street with bilingual Kannada and English shop signs for a kirana store, bakery, flower shop and tailor"
-            width={1408}
-            height={912}
-            className="w-full rounded-2xl"
-          />
-        </div>
-      </ScrollSection>
-
-      <ScrollSection id="shops" className="mx-auto max-w-6xl px-4 py-16">
-        <p className="text-center text-sm font-bold uppercase tracking-[0.3em] text-muted-foreground">
-          What's around you
-        </p>
-        <h2 className="mt-3 text-center font-display text-4xl uppercase sm:text-5xl">
-          More choices, one app
-        </h2>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((c) => (
-            <article
-              key={c.title}
-              className={`brutal brutal-hover rounded-card flex min-w-0 flex-col overflow-hidden ${c.color} p-6 text-left`}
+      <PinnedScene heightVh={340} className="relative">
+        {(pinProgress) => (
+          <div className="relative mx-auto w-full max-w-5xl px-4 pt-16 text-center sm:px-6">
+            <div
+              className="pointer-events-none absolute inset-x-0 top-1/2 z-20 -translate-y-1/2 px-4"
+              style={{
+                opacity: 1 - Math.min(Math.max(pinProgress / 0.28, 0), 1),
+                transform: `translateY(-50%) scale(${1 - Math.min(Math.max(pinProgress / 0.28, 0), 1) * 0.12})`,
+              }}
             >
-              <p className="font-display text-4xl leading-none">{c.count}</p>
-              <h3 className="mt-2 text-2xl uppercase leading-tight">{c.title}</h3>
-              <p className="mt-2 text-sm font-semibold leading-snug">{c.tag}</p>
-              <ul className="mt-5 space-y-2 border-t-[3px] border-border pt-4 text-sm font-bold uppercase leading-snug tracking-wide">
-                {c.items.map((i) => (
-                  <li key={i} className="break-words">
-                    {i}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-      </ScrollSection>
+              <p className="display text-4xl leading-[1.2] sm:text-6xl md:text-7xl">
+                Hi there, <span className="text-blue">neighbour</span>.
+              </p>
+              <span className="mt-4 inline-block text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+                Scroll to walk down your lane
+              </span>
+            </div>
 
-      <ScrollSection id="how" className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="text-center font-display text-4xl uppercase sm:text-5xl">
-          Three steps. That's it.
-        </h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {steps.map((s) => (
-            <article
-              key={s.n}
-              className="brutal rounded-card flex min-w-0 flex-col overflow-hidden bg-card p-7 pb-8"
+            <div
+              className="flex justify-center"
+              style={{ opacity: Math.min(Math.max((pinProgress - 0.04) / 0.14, 0), 1) }}
             >
-              <div
-                className={`brutal flex size-14 shrink-0 items-center justify-center rounded-card-sm ${s.color}`}
-              >
-                <s.icon className="size-7" strokeWidth={2.5} />
-              </div>
-              <p className="mt-5 font-display text-sm tracking-[0.3em] text-muted-foreground">
-                {s.n}
-              </p>
-              <h3 className="mt-1 text-2xl uppercase leading-tight">{s.title}</h3>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-muted-foreground">
-                {s.body}
-              </p>
-            </article>
-          ))}
-        </div>
-      </ScrollSection>
-
-      <ScrollSection id="partner" className="mx-auto max-w-6xl px-4 py-16">
-        <div className="brutal-lg rounded-card-lg grid gap-8 overflow-hidden bg-purple p-8 sm:p-12 lg:grid-cols-2">
-          <div className="min-w-0">
-            <p className="text-sm font-bold uppercase tracking-[0.3em]">For Local places </p>
-            <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">
-            Make Your Place Discoverable
-            </h2>
-            <p className="mt-4 max-w-md font-semibold leading-relaxed">
-              One app to Manage all your requirements.
+              <ScrollZoom
+                src={heroShops}
+                alt="A row of neighbourhood places: bakery, kirana store, florist, tailor and a chai stall"
+                p={pinProgress}
+                from={0.18}
+                to={1}
+                start={0.12}
+                end={0.85}
+              />
+            </div>
+            <h1
+              className="mt-8 pb-3 text-4xl leading-[1.25] sm:text-5xl md:text-6xl"
+              style={{ opacity: Math.min(Math.max((pinProgress - 0.26) / 0.1, 0), 1) }}
+            >
+              <ScrollWords
+                p={pinProgress}
+                start={0.32}
+                end={0.85}
+                words={[
+                  { text: "Everything" },
+                  { text: "you" },
+                  { text: "need," },
+                  { text: "already", color: "text-pink" },
+                  { text: "on", color: "text-grape" },
+                  { text: "your", color: "text-leaf" },
+                  { text: "lane.", color: "text-sky" },
+                ]}
+              />
+            </h1>
+            <p
+              className="mx-auto mt-4 max-w-md text-sm font-semibold tracking-widest text-muted-foreground uppercase sm:text-base"
+              style={{
+                opacity: Math.min(Math.max((pinProgress - 0.7) / 0.25, 0), 1),
+                transform: `translateY(${(1 - Math.min(Math.max((pinProgress - 0.7) / 0.25, 0), 1)) * 16}px)`,
+              }}
+            >
+             
             </p>
-            <a
-              href={PARTNER_URL}
-              onClick={openPartnerApp}
-              className="brutal brutal-hover mt-7 inline-block rounded-full bg-card px-7 py-3 font-display text-lg uppercase"
-            >
-              Partner with us
-            </a>
           </div>
-          <div className="grid min-w-0 gap-4 sm:grid-cols-2">
-            {[
-              { k: "₹0", v: "Zero joining fee" },
-              { k: "1 : 1 ", v: "Chat with Customers" },
-              { k: "24/7", v: "Get discovered" },
-              { k: "100%", v: "Your business" },
-            ].map((s) => (
-              <div
-                key={s.k}
-                className="brutal flex min-w-0 flex-col overflow-hidden rounded-[1.25rem] bg-card p-5"
+        )}
+      </PinnedScene>
+
+      <section className="px-4 pb-14 sm:px-6">
+        <div className="mx-auto max-w-xl text-center">
+          <Reveal>
+            <p className="text-base text-muted-foreground sm:text-lg">
+              MNO connects you to the bakery, kirana, florist and tailor around the corner. Search
+              what they have, chat, and pick it up before your tea goes cold.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15} className="mt-8 flex flex-col items-center gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a
+                href={ANDROID_APP_URL}
+                className="display rounded-full border-2 border-ink bg-primary px-8 py-4 text-lg shadow-pop transition-transform hover:-translate-y-1 active:translate-y-0"
               >
-                <p className="font-display text-3xl leading-none">{s.k}</p>
-                <p className="mt-2 text-xs font-bold uppercase leading-snug tracking-wide text-muted-foreground">
-                  {s.v}
-                </p>
-              </div>
+                Get the app
+              </a>
+              <a
+                href="#join"
+                className="display rounded-full border-2 border-ink bg-card px-8 py-4 text-lg shadow-pop-sm transition-transform hover:-translate-y-1 active:translate-y-0"
+              >
+                Notify me
+              </a>
+            </div>
+            <span className="flex items-center gap-2 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
+              <span className="animate-blink inline-block h-2 w-2 rounded-full bg-leaf" />
+              Live in neighbourhoods
+            </span>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="relative z-10 border-y-2 border-ink bg-secondary py-5">
+        <Parallax speed={26}>
+          <Marquee items={categories} />
+          <div className="mt-3">
+            <Marquee items={categories} reverse fast />
+          </div>
+        </Parallax>
+      </section>
+
+      <section id="how" className="px-4 py-20 sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-5xl">
+          <Reveal direction="right">
+            <p className="display text-sm tracking-[0.2em] text-muted-foreground">Inside</p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="mt-3 max-w-2xl text-4xl sm:text-5xl">
+              Three taps between you and the counter
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {steps.map((s, i) => (
+              <ScrollScene key={s.title} className="h-full" lift={90} tilt={i % 2 === 0 ? -2 : 2}>
+                <article
+                  className={`pop-card h-full p-6 transition-transform duration-300 hover:-translate-y-2 ${
+                    i % 2 === 0 ? "hover:-rotate-1" : "hover:rotate-1"
+                  }`}
+                >
+                  <span
+                    className={`grid h-12 w-12 place-items-center rounded-full border-2 border-ink ${s.color}`}
+                  >
+                    <s.icon className="h-6 w-6 text-ink" strokeWidth={2.4} />
+                  </span>
+                  <p className="mt-5 text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                    {s.kicker}
+                  </p>
+                  <h3 className="mt-2 text-2xl">{s.title}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground">{s.body}</p>
+                </article>
+              </ScrollScene>
             ))}
           </div>
         </div>
-      </ScrollSection>
+      </section>
 
-      <ScrollSection id="join" className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <div className="brutal-lg overflow-hidden rounded-[1.75rem] bg-cyan p-8 sm:p-12">
-          <Users className="mx-auto size-9" strokeWidth={2.5} />
-          <h2 className="mt-4 font-display text-4xl uppercase sm:text-5xl">
-            Be first in your area
-          </h2>
-          <p className="mt-3 font-semibold">
-            We open one neighbourhood at a time. Message us on WhatsApp and we'll ping you
-            the day MNO lands on your street.
-          </p>
-          <a
-            href="https://wa.me/914116945"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="brutal-lg brutal-hover mx-auto mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-pink px-8 py-4 font-display text-lg uppercase"
-          >
-            <MessageCircle className="size-5" strokeWidth={2.5} />
-            Chat on WhatsApp
-          </a>
-          <p className="mt-4 text-xs font-bold uppercase tracking-widest">
-            
-          </p>
+      <section id="places" className="border-y-2 border-ink bg-sun px-4 py-16 sm:px-6">
+        <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3">
+          {stats.map((s) => (
+            <ScrollScene key={s.label} className="text-center" lift={60} scale={0.75}>
+              <p className="display text-5xl sm:text-6xl">{s.value}</p>
+              <p className="mt-2 text-sm font-semibold tracking-widest uppercase">{s.label}</p>
+            </ScrollScene>
+          ))}
         </div>
-      </ScrollSection>
+      </section>
 
-      <footer className="border-t-[3px] border-border px-4 py-10 text-center">
-        <p className="font-display text-3xl uppercase text-cerulean">MNO</p>
-        <p className="mt-2 text-sm font-semibold text-muted-foreground">
-          Copyright © {new Date().getFullYear()} MNO. All rights reserved.
-        </p>
+      <section className="px-4 py-20 sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-5xl">
+          <Reveal>
+            <h2 className="max-w-2xl text-4xl sm:text-5xl">
+              Big-app convenience, <span className="text-sky">corner-shop</span> soul
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
+            {perks.map((perk, i) => (
+              <Reveal
+                key={perk.title}
+                delay={(i % 2) * 0.12}
+                direction={i % 2 === 0 ? "left" : "right"}
+              >
+                <div className="flex h-full items-start gap-4 rounded-2xl border-2 border-dashed border-ink/30 p-6">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-ink bg-card shadow-pop-sm">
+                    <perk.icon className="h-5 w-5" strokeWidth={2.4} />
+                  </span>
+                  <div>
+                    <h3 className="text-xl">{perk.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{perk.body}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="owners" className="px-4 pb-20 sm:px-6 sm:pb-28">
+        <div className="mx-auto max-w-5xl">
+          <ScrollScene lift={110} scale={0.9} tilt={-2}>
+            <div className="pop-card grid items-center gap-8 bg-secondary p-8 sm:p-12 md:grid-cols-[1.2fr_1fr]">
+              <div>
+                <p className="display text-sm tracking-[0.2em] text-muted-foreground">
+                  For You
+                </p>
+                <h2 className="mt-3 text-3xl sm:text-4xl">
+                  Your place, online in ten minutes. No commission.
+                </h2>
+                <p className="mt-4 text-sm text-muted-foreground sm:text-base">
+                 Connect with your customers.
+                </p>
+                <a
+                  href={PARTNER_URL}
+                  onClick={openPartnerApp}
+                  className="display mt-7 inline-block rounded-full border-2 border-ink bg-accent px-6 py-3 shadow-pop-sm transition-transform hover:-translate-y-1"
+                >
+                  List my place
+                </a>
+              </div>
+              <div className="flex justify-center">
+                <span
+                  style={{ ["--tilt" as string]: "-4deg" }}
+                  className="animate-float grid h-40 w-40 place-items-center rounded-3xl border-2 border-ink bg-card shadow-pop"
+                >
+                  <Store className="h-16 w-16" strokeWidth={2} />
+                </span>
+              </div>
+            </div>
+          </ScrollScene>
+        </div>
+      </section>
+
+      <section id="join" className="border-t-2 border-ink bg-ink px-4 py-20 sm:px-6 sm:py-28">
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <h2 className="text-4xl text-background sm:text-5xl">
+              Get MNO in your <span className="text-primary">neighbourhood</span>
+            </h2>
+            <p className="mt-4 text-sm text-background/70 sm:text-base">
+              Message us on WhatsApp and we'll tell you the day your street goes live.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <div className="mt-8 flex flex-col items-center gap-4">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="display inline-flex items-center gap-2 rounded-full border-2 border-ink bg-primary px-8 py-4 text-lg shadow-pop transition-transform hover:-translate-y-1"
+              >
+                <MessageCircle className="h-5 w-5" strokeWidth={2.4} />
+                Chat on WhatsApp
+              </a>
+              <p className="text-xs text-background/50">
+                Or download:{" "}
+                <a href={ANDROID_APP_URL} className="underline hover:text-background">
+                  Android
+                </a>
+                {" · "}
+                <a href={IOS_APP_URL} className="underline hover:text-background">
+                  iOS
+                </a>
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <footer className="bg-ink px-4 pb-10 sm:px-6">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 border-t border-background/15 pt-6 text-xs text-background/60 sm:flex-row">
+          <span className="display text-base text-background">MNO</span>
+          <span>Built for the places around the corner.</span>
+        </div>
       </footer>
     </div>
   );
