@@ -73,6 +73,11 @@
     <span>Loading your place...</span>
   </div>
   <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        for (var i = 0; i < regs.length; i++) regs[i].unregister();
+      });
+    }
     setTimeout(function () {
       var el = document.getElementById('app-loading');
       if (!el) return;
